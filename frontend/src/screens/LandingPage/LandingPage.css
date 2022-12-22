@@ -1,0 +1,58 @@
+.main {
+  min-height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url("https://img.freepik.com/free-photo/assortment-desk-elements-with-empty-notebook_23-2148513335.jpg?w=996");
+  background-position: center;
+  /* background-size: cover; */
+}
+
+.title__container {
+  width: 50%;
+  margin: auto;
+  margin-bottom: 24px;
+}
+
+.button__container {
+  width: 50%;
+  margin: auto;
+}
+
+.landingbutton {
+  width: 150px;
+  height: 55px;
+}
+
+.title {
+  font-size: 56px;
+}
+
+.subtitle {
+  font-size: 18px;
+}
+
+@media screen and (max-width: 768px) {
+  .main {
+    background-size: cover;
+  }
+  .title__container {
+    width: 90%;
+  }
+  .title {
+    font-size: 2.5rem;
+  }
+}
+
+@media screen and (max-width: 478px) {
+  .title__container {
+    width: 100%;
+  }
+  .title {
+    font-size: 2rem;
+  }
+  .landingbutton {
+    width: 150px;
+    height: 50px;
+  }
+}

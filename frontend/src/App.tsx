@@ -1,8 +1,19 @@
 import React from "react";
 import "./App.css";
+import Footer from "./components/Footer/Footer";
+import Header from "./components/Header/Header";
+import LandingPage from "./screens/LandingPage/LandingPage";
 
 const App: React.FC = () => {
-  return <h1 className="App">Hello World</h1>;
+  return (
+    <>
+      <Header />
+      <main>
+        <LandingPage />
+      </main>
+      <Footer />
+    </>
+  );
 };
 
 export default App;
