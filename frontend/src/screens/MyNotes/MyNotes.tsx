@@ -1,23 +1,42 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import MainScreenLayout from "../../components/MainScreen/MainScreenLayout";
 import { Link } from "react-router-dom";
 import { Accordion, Badge, Button, Card } from "react-bootstrap";
-import notes from "./data/notes";
+import axios from "axios";
+
+type Note = {
+  _id: string;
+  title: string;
+  content: string;
+  category: string;
+};
 
 const MyNotes: React.FC = () => {
+  const [notes, setNotes] = useState<Note[]>([]);
   const deleteHandler = (noteId: number | string) => {
     if (window.confirm("Are you sure ?")) {
     }
   };
+
+  const fetchNotes = async () => {
+    const { data } = await axios.get("/api/notes");
+    setNotes(data);
+  };
+
+  useEffect(() => {
+    fetchNotes();
+  }, []);
+
+  console.log(notes);
   return (
     <MainScreenLayout title="Welcome Rahul Aggarwal ...">
       <Link to="createnote">
         <Button size="lg">Create New Note</Button>
       </Link>
       {notes.map((note) => (
-        <Accordion>
+        <Accordion key={note._id}>
           <Accordion.Item eventKey={`${note._id.toString()}`}>
-            <Card className="my-2" key={note._id}>
+            <Card className="my-2">
               <Card.Header className="d-flex">
                 <span
                   style={{
@@ -30,7 +49,7 @@ const MyNotes: React.FC = () => {
                     fontWeight: "bold",
                   }}
                 >
-                  <Accordion.Header as={Card.Text} variant="link" eventKey="0">
+                  <Accordion.Header as={Card.Text} variant="link">
                     {note.title}
                   </Accordion.Header>
                 </span>
