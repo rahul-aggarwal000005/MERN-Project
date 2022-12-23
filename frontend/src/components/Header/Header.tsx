@@ -5,12 +5,15 @@ import Form from "react-bootstrap/Form";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
     <Navbar collapseOnSelect expand="lg" bg="primary" variant="dark">
       <Container>
-        <Navbar.Brand href="#home">Note Zipper</Navbar.Brand>
+        <Navbar.Brand>
+          <Link to={"/"}>Note Zipper</Link>
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="m-auto">
@@ -24,7 +27,9 @@ const Header = () => {
             </Form>
           </Nav>
           <Nav>
-            <Nav.Link href="#action1">My Notes</Nav.Link>
+            <Nav.Link>
+              <Link to={"/mynotes"}>My Notes</Link>
+            </Nav.Link>
             <NavDropdown title="Rahul Aggarwal" id="collasible-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">My Profile</NavDropdown.Item>
               <NavDropdown.Divider />
