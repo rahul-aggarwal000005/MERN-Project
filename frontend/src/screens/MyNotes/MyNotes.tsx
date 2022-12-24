@@ -27,7 +27,7 @@ const MyNotes: React.FC = () => {
     fetchNotes();
   }, []);
 
-  console.log(notes);
+  // console.log(notes);
   return (
     <MainScreenLayout title="Welcome Rahul Aggarwal ...">
       <Link to="createnote">
