@@ -1,31 +1,40 @@
-import React, { useEffect, useState } from "react";
-import MainScreenLayout from "../../components/MainScreen/MainScreenLayout";
-import { Link } from "react-router-dom";
-import { Accordion, Badge, Button, Card } from "react-bootstrap";
-import axios from "axios";
+import React, { useEffect, useState } from 'react'
+import MainScreenLayout from '../../components/MainScreen/MainScreenLayout'
+import { Link, useNavigate } from 'react-router-dom'
+import { Accordion, Badge, Button, Card } from 'react-bootstrap'
+import axios from 'axios'
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
 
 type Note = {
-  _id: string;
-  title: string;
-  content: string;
-  category: string;
-};
+  _id: string
+  title: string
+  content: string
+  category: string
+}
 
 const MyNotes: React.FC = () => {
-  const [notes, setNotes] = useState<Note[]>([]);
+  const [notes, setNotes] = useState<Note[]>([])
   const deleteHandler = (noteId: number | string) => {
-    if (window.confirm("Are you sure ?")) {
+    if (window.confirm('Are you sure ?')) {
     }
-  };
-
+  }
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+  const userLogin = useAppSelector((state) => state.userLogin)
+  const { loading, error, userInfo } = userLogin
   const fetchNotes = async () => {
-    const { data } = await axios.get("/api/notes");
-    setNotes(data);
-  };
+    const { data } = await axios.get('/api/notes')
+    setNotes(data)
+  }
 
   useEffect(() => {
-    fetchNotes();
-  }, []);
+    if (!userInfo) {
+      navigate('/')
+      return
+    }
+
+    fetchNotes()
+  }, [userInfo])
 
   // console.log(notes);
   return (
@@ -40,13 +49,13 @@ const MyNotes: React.FC = () => {
               <Card.Header className="d-flex">
                 <span
                   style={{
-                    color: "black",
-                    textDecoration: "none",
+                    color: 'black',
+                    textDecoration: 'none',
                     flex: 1,
-                    alignSelf: "center",
-                    cursor: "pointer",
-                    fontSize: "18px",
-                    fontWeight: "bold",
+                    alignSelf: 'center',
+                    cursor: 'pointer',
+                    fontSize: '18px',
+                    fontWeight: 'bold',
                   }}
                 >
                   <Accordion.Header as={Card.Text} variant="link">
@@ -85,7 +94,7 @@ const MyNotes: React.FC = () => {
         </Accordion>
       ))}
     </MainScreenLayout>
-  );
-};
+  )
+}
 
-export default MyNotes;
+export default MyNotes

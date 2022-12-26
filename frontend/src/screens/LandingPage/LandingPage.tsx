@@ -1,19 +1,19 @@
-import React, { useEffect } from "react";
-import Container from "react-bootstrap/Container";
-import Button from "react-bootstrap/Button";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import "./LandingPage.css";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect } from 'react'
+import Container from 'react-bootstrap/Container'
+import Button from 'react-bootstrap/Button'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import './LandingPage.css'
+import { useNavigate } from 'react-router-dom'
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
 const LandingPage = () => {
-  // const navigate = useNavigate();
-  // useEffect(() => {
-  //   const userInfo = localStorage.getItem("userInfo");
-  //   if (userInfo) {
-  //     // console.log(userInfo);
-  //     navigate("/mynotes");
-  //   }
-  // }, [navigate]);
+  const navigate = useNavigate()
+  useEffect(() => {
+    const userInfo = localStorage.getItem('userInfo')
+    if (userInfo) {
+      navigate('/mynotes')
+    }
+  }, [navigate])
   return (
     <div className="main">
       <Container>
@@ -39,7 +39,7 @@ const LandingPage = () => {
         </Row>
       </Container>
     </div>
-  );
-};
+  )
+}
 
-export default LandingPage;
+export default LandingPage

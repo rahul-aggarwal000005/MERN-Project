@@ -1,46 +1,34 @@
-import React, { FormEvent, useEffect, useState } from "react";
-import MainScreenLayout from "../../components/MainScreen/MainScreenLayout";
-import { Form, Button, Row, Col } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
-import axios, { AxiosError } from "axios";
-import Loader from "../../components/Loader/Loader";
-import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
-
+import React, { FormEvent, useEffect, useState } from 'react'
+import MainScreenLayout from '../../components/MainScreen/MainScreenLayout'
+import { Form, Button, Row, Col } from 'react-bootstrap'
+import { Link, useNavigate } from 'react-router-dom'
+import axios, { AxiosError } from 'axios'
+import Loader from '../../components/Loader/Loader'
+import ErrorMessage from '../../components/ErrorMessage/ErrorMessage'
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
+import { login } from '../../features/actions/userActions'
 const LoginPage = () => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<number | string>("");
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState<boolean>(false);
-  const submitHandler = async (e: FormEvent) => {
-    e.preventDefault();
+  const [email, setEmail] = useState<string>('')
+  const [password, setPassword] = useState<number | string>('')
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+  const userLogin = useAppSelector((state) => state.userLogin)
+  const { loading, error, userInfo } = userLogin
 
-    try {
-      const config = {
-        headers: {
-          "Content-type": "application/json",
-        },
-      };
-      setLoading(true);
-      const { data } = await axios.post(
-        "/api/users/login",
-        { email, password },
-        config
-      );
-      // console.log(data);
-      localStorage.setItem("userInfo", JSON.stringify(data));
-      setLoading(false);
-    } catch (error) {
-      if (error instanceof AxiosError && error.response) {
-        // console.log(error.response.data.message);
-        setError(error.response.data.message);
-        setLoading(false);
-      }
+  const submitHandler = async (e: FormEvent) => {
+    e.preventDefault()
+    dispatch(login(email, password))
+  }
+
+  useEffect(() => {
+    if (userInfo) {
+      navigate('/mynotes')
     }
-  };
+  }, [navigate, userInfo])
 
   return (
     <MainScreenLayout title="LOGIN">
-      <div style={{ display: "flex", flexDirection: "column", margin: "20px" }}>
+      <div style={{ display: 'flex', flexDirection: 'column', margin: '20px' }}>
         {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
         {loading && <Loader />}
         <Form onSubmit={submitHandler}>
@@ -77,7 +65,7 @@ const LoginPage = () => {
         </Row>
       </div>
     </MainScreenLayout>
-  );
-};
+  )
+}
 
-export default LoginPage;
+export default LoginPage
