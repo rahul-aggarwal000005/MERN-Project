@@ -4,17 +4,15 @@ const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 const app = express();
 const userRoutes = require("./routes/userRoutes");
+const noteRoutes = require("./routes/noteRoutes");
 const { notFound, errorHandler } = require("./middlewares/errorMiddlewares");
 
 dotenv.config();
 connectDB();
 app.use(express.json());
 
-app.get("/api/notes", (req, res) => {
-  res.send(notes);
-});
-
 app.use("/api/users", userRoutes);
+app.use("/api/notes", noteRoutes);
 
 // using middlewares to format the error
 app.use(notFound);
