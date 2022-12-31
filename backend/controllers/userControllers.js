@@ -1,9 +1,9 @@
 const User = require("../models/userModel");
-const asynHandler = require("express-async-handler");
 const generateToken = require("../utils/generateToken");
+const expressAsyncHandler = require("express-async-handler");
 
 // create the new user if the user doesnot exist other wise throw the error
-const registerUser = asynHandler(async (req, res) => {
+const registerUser = expressAsyncHandler(async (req, res) => {
   // extract the info during the sign up
   const { name, email, password, pic } = req.body;
 
@@ -40,7 +40,7 @@ const registerUser = asynHandler(async (req, res) => {
 });
 
 // authenticate the user with the email and password and sending the jwt token as response
-const authUser = asynHandler(async (req, res) => {
+const authUser = expressAsyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (user && (await user.matchPassword(password))) {
@@ -58,4 +58,24 @@ const authUser = asynHandler(async (req, res) => {
   }
 });
 
-module.exports = { registerUser, authUser };
+const updateUserProfile = expressAsyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+  if (user) {
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+    user.pic = req.body.pic || user.pic;
+    if (req.body.password) {
+      user.password = req.body.password;
+    }
+    const updatedUser = await user.save();
+    res.json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      pic: updatedUser.pic,
+      token: generateToken(updatedUser._id),
+    });
+  }
+});
+
+module.exports = { registerUser, authUser, updateUserProfile };

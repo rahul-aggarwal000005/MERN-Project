@@ -1,21 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '../../app/store'
-
-type User = {
-  email: string
-  isAdmin: boolean
-  name: string
-  pic: string
-  token: string
-  _id: string
-}
-
-interface UserState {
-  loading: null | boolean
-  error: string | null | boolean
-  userInfo?: User | null
-}
+import { User, UserState } from '../states/userState'
 
 const initialState: UserState = {
   loading: null,
@@ -53,7 +39,9 @@ export const userSlice = createSlice({
       state.error = action.payload
     },
     userLogout: (state) => {
-      state = initialState
+      state.userInfo = null
+      state.error = null
+      state.loading = null
     },
   },
 })

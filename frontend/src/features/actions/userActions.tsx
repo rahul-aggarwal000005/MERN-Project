@@ -1,5 +1,4 @@
 import axios, { AxiosError } from 'axios'
-import { useNavigate } from 'react-router-dom'
 import { AppDispatch } from '../../app/store'
 import {
   userLoginFail,
@@ -8,7 +7,7 @@ import {
   userRegisterFail,
   userRegisterRequest,
   userRegisterSuccess,
-} from '../userSlice/userSlice'
+} from '../slice/userSlice'
 
 export const login = (email: string, password: string | number) => async (
   dispatch: AppDispatch,

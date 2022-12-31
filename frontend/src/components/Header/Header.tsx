@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Container from 'react-bootstrap/Container'
 import Form from 'react-bootstrap/Form'
 import Nav from 'react-bootstrap/Nav'
@@ -7,11 +7,15 @@ import NavDropdown from 'react-bootstrap/NavDropdown'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAppDispatch } from '../../app/hooks'
 import { useAppSelector } from '../../app/hooks'
-import { userLogout } from '../../features/userSlice/userSlice'
+import { userLogout } from '../../features/slice/userSlice'
 
-const Header: React.FC = () => {
+type Props = {
+  setSearch: React.Dispatch<React.SetStateAction<string>>
+}
+const Header: React.FC<Props> = ({ setSearch }) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
+  const [name, setName] = useState('Profile')
   const userLogin = useAppSelector((state) => state.userLogin)
   const { loading, error, userInfo } = userLogin
   const logoutHandler = () => {
@@ -19,6 +23,13 @@ const Header: React.FC = () => {
     localStorage.removeItem('userInfo')
     navigate('/')
   }
+
+  useEffect(() => {
+    if (userInfo) {
+      setName(userInfo.name)
+    }
+  }, [dispatch, navigate, userLogin, name])
+
   return (
     <Navbar collapseOnSelect expand="lg" bg="primary" variant="dark">
       <Container>
@@ -34,6 +45,7 @@ const Header: React.FC = () => {
                 placeholder="Search"
                 className="me-2"
                 aria-label="Search"
+                onChange={(e) => setSearch(e.target.value)}
               />
             </Form>
           </Nav>
@@ -41,7 +53,7 @@ const Header: React.FC = () => {
             <Nav.Link as={Link} to={'/mynotes'}>
               My Notes
             </Nav.Link>
-            <NavDropdown title="Rahul Aggarwal" id="collasible-nav-dropdown">
+            <NavDropdown title={`${name}`} id="collasible-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">My Profile</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item onClick={logoutHandler}>
