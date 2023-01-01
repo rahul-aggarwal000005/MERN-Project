@@ -7,6 +7,9 @@ import {
   userRegisterFail,
   userRegisterRequest,
   userRegisterSuccess,
+  userUpdateError,
+  userUpdateRequest,
+  userUpdateSuccess,
 } from '../slice/userSlice'
 
 export const login = (email: string, password: string | number) => async (
@@ -71,6 +74,47 @@ export const register = (
       // setLoading(false);
       dispatch(
         userRegisterFail(
+          error.response.data.message
+            ? error.response.data.message
+            : error.message,
+        ),
+      )
+    }
+  }
+}
+
+export const update = (
+  name: string,
+  email: string,
+  password: string,
+  pic: string,
+) => async (dispatch: AppDispatch, getState: any) => {
+  try {
+    dispatch(userUpdateRequest())
+    const {
+      userLogin: { userInfo },
+    } = getState()
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+    // setLoading(true);
+    const { data } = await axios.post(
+      '/api/users/profile',
+      { name, pic, email, password },
+      config,
+    )
+    localStorage.setItem('userInfo', JSON.stringify(data))
+    // setLoading(false);
+    dispatch(userUpdateSuccess(data))
+  } catch (error) {
+    if (error instanceof AxiosError && error.response) {
+      // setError(error.response.data.message);
+      // setLoading(false);
+      dispatch(
+        userUpdateError(
           error.response.data.message
             ? error.response.data.message
             : error.message,

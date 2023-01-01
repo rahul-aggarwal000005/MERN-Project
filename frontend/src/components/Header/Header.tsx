@@ -50,16 +50,26 @@ const Header: React.FC<Props> = ({ setSearch }) => {
             </Form>
           </Nav>
           <Nav>
-            <Nav.Link as={Link} to={'/mynotes'}>
-              My Notes
-            </Nav.Link>
-            <NavDropdown title={`${name}`} id="collasible-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">My Profile</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item onClick={logoutHandler}>
-                Logout
-              </NavDropdown.Item>
-            </NavDropdown>
+            {userInfo ? (
+              <>
+                <Nav.Link as={Link} to={'/mynotes'}>
+                  My Notes
+                </Nav.Link>
+                <NavDropdown title={`${name}`} id="collasible-nav-dropdown">
+                  <NavDropdown.Item href="/profile">
+                    My Profile
+                  </NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item onClick={logoutHandler}>
+                    Logout
+                  </NavDropdown.Item>
+                </NavDropdown>
+              </>
+            ) : (
+              <Nav.Link as={Link} to={'/login'}>
+                Login
+              </Nav.Link>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>

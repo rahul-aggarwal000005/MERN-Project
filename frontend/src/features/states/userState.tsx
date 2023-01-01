@@ -11,4 +11,5 @@ export interface UserState {
   loading: null | boolean
   error: string | null | boolean
   userInfo?: User | null
+  success?: boolean | null
 }

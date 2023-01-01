@@ -10,6 +10,7 @@ const initialState: UserState = {
     localStorage.getItem('userInfo') !== null
       ? JSON.parse(localStorage.getItem('userInfo') || '')
       : null,
+  success: null,
 }
 
 export const userSlice = createSlice({
@@ -43,6 +44,20 @@ export const userSlice = createSlice({
       state.error = null
       state.loading = null
     },
+    userUpdateRequest: (state) => {
+      state.loading = true
+      state.success = false
+    },
+    userUpdateSuccess: (state, action: PayloadAction<User>) => {
+      state.loading = false
+      state.userInfo = action.payload
+      state.success = true
+    },
+    userUpdateError: (state, action: PayloadAction<string>) => {
+      state.loading = false
+      state.error = action.payload
+      state.success = false
+    },
   },
 })
 
@@ -55,6 +70,9 @@ export const {
   userRegisterRequest,
   userRegisterSuccess,
   userRegisterFail,
+  userUpdateRequest,
+  userUpdateSuccess,
+  userUpdateError,
 } = actions
 
 // Other code such as selectors can use the imported `RootState` type
